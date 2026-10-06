@@ -1,0 +1,47 @@
+{
+  "info": {
+    "name": "Blood Bank Finder API",
+    "_postman_id": "8a1f8e39-3b5c-4c44-a2c9-bloodbankfinder",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:8080"},
+    {"key": "adminToken", "value": "change-me"}
+  ],
+  "item": [
+    {
+      "name": "Register Donor",
+      "request": {
+        "method": "POST",
+        "header": [{"key":"Content-Type","value":"application/json"}],
+        "url": "{{baseUrl}}/api/donors",
+        "body": {"mode":"raw","raw":"{\"name\":\"Rahul Patel\",\"bloodGroup\":\"O_POSITIVE\",\"city\":\"Vadodara\",\"phone\":\"+919876543210\",\"lastDonationDate\":\"2026-01-10\",\"active\":true}"}
+      }
+    },
+    {
+      "name": "Search O+ Vadodara",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/donors/search?bloodGroup=O_POSITIVE&city=Vadodara"
+      }
+    },
+    {
+      "name": "Create Emergency Request",
+      "request": {
+        "method": "POST",
+        "header": [{"key":"Content-Type","value":"application/json"}],
+        "url": "{{baseUrl}}/api/requests",
+        "body": {"mode":"raw","raw":"{\"bloodGroup\":\"O_POSITIVE\",\"city\":\"Vadodara\",\"unitsRequired\":2,\"requesterName\":\"Amit Shah\",\"requesterPhone\":\"+919812345678\",\"hospital\":\"Example Hospital\",\"message\":\"Urgent requirement\"}"}
+      }
+    },
+    {
+      "name": "Add Blood Bank",
+      "request": {
+        "method": "POST",
+        "header": [{"key":"Content-Type","value":"application/json"},{"key":"X-ADMIN-TOKEN","value":"{{adminToken}}"}],
+        "url": "{{baseUrl}}/api/admin/blood-banks",
+        "body": {"mode":"raw","raw":"{\"name\":\"City Blood Centre\",\"city\":\"Vadodara\",\"address\":\"Main Road\",\"phone\":\"+912656000000\",\"bloodGroup\":\"O_POSITIVE\",\"unitsAvailable\":8}"}
+      }
+    }
+  ]
+}

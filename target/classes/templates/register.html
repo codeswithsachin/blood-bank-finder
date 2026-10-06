@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register - Blood Bank Finder</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container" style="flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+    <p style="font-size:0.8rem; align-self:flex-end; margin-bottom:8px;">
+        <a th:href="@{${currentUri}(lang=en)}" style="color:var(--muted); text-decoration:none;">EN</a>
+        /
+        <a th:href="@{${currentUri}(lang=hi)}" style="color:var(--muted); text-decoration:none;">हिं</a>
+    </p>
+    <div class="auth-wrap glass glass-card">
+        <h1 th:text="#{register.title}">Donor Registration</h1>
+        <p class="auth-sub" th:text="#{register.subtitle}">Join as a blood donor</p>
+
+        <form th:action="@{/register}" method="post">
+            <label for="username" th:text="#{register.username}">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password" th:text="#{register.password}">Password</label>
+            <input type="password" id="password" name="password" required minlength="6">
+
+            <label for="name" th:text="#{register.name}">Full name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="bloodGroup" th:text="#{register.bloodGroup}">Blood group</label>
+            <select id="bloodGroup" name="bloodGroup" required>
+                <option th:each="group : ${bloodGroups}" th:value="${group}" th:text="${group.symbol}"></option>
+            </select>
+
+            <label for="city" th:text="#{register.city}">City</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="phone" th:text="#{register.phone}">Phone</label>
+            <input type="text" id="phone" name="phone" required th:placeholder="#{register.phonePlaceholder}">
+
+            <label for="captchaAnswer" th:text="#{register.captchaLabel} + ': ' + ${captchaQuestion}"></label>
+            <input type="text" id="captchaAnswer" name="captchaAnswer" required inputmode="numeric">
+
+            <div th:if="${error}" class="error" th:text="${error}"></div>
+
+            <button type="submit" style="width:100%;" th:text="#{register.button}">Create account</button>
+        </form>
+
+        <p class="muted-link"><span th:text="#{register.loginPrompt}">Already registered?</span> <a th:href="@{/login}" th:text="#{register.loginLink}">Log in</a></p>
+        <p class="muted-link"><a th:href="@{/}">&larr; <span th:text="#{login.backHome}">Back to home</span></a></p>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: ai-assistant}"></div>
+
+<script th:src="@{/js/ai-assistant.js}"></script>
+</body>
+</html>

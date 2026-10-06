@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Request Blood - Blood Bank Finder</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{fragments :: public-nav}"></nav>
+
+<div class="container" style="max-width:600px;">
+    <h1 style="font-size:1.8rem; margin-bottom:4px;" th:text="#{requestBlood.title}">🚨 Request Blood</h1>
+    <p style="color:var(--muted); margin-top:0;" th:text="#{requestBlood.subtitle}">
+        No account needed. Submit an emergency request and it's immediately visible to eligible, compatible donors
+        in your city.
+    </p>
+
+    <div class="glass glass-card">
+        <div th:if="${success}" style="margin-bottom:16px;">
+            <div class="success" style="font-size:0.95rem;" th:text="'✅ ' + #{requestBlood.successMsg}">✅ Your request has been submitted.</div>
+            <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+                <a th:href="'https://wa.me/?text=' + ${#uris.escapeQueryParam('Urgent blood request submitted on Blood Bank Finder. Please share and help find a donor: ' + currentUrl)}"
+                   target="_blank" rel="noopener" class="btn" style="margin:0; background:#25D366;" th:text="'📤 ' + #{requestBlood.shareWhatsApp}">📤 Share on WhatsApp</a>
+                <a th:href="'sms:?body=' + ${#uris.escapeQueryParam('Urgent blood request submitted on Blood Bank Finder, please help share.')}"
+                   class="btn-outline" style="padding:11px 20px; border-radius:9px;" th:text="'✉️ ' + #{requestBlood.shareSms}">✉️ Share via SMS</a>
+            </div>
+        </div>
+
+        <form th:action="@{/request-blood}" method="post">
+            <div class="grid-2">
+                <div>
+                    <label for="bloodGroup" th:text="#{requestBlood.bloodGroup}">Blood group needed</label>
+                    <select id="bloodGroup" name="bloodGroup" required>
+                        <option th:each="group : ${bloodGroups}" th:value="${group}" th:text="${group.symbol}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="city" th:text="#{requestBlood.city}">City</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div>
+                    <label for="unitsRequired" th:text="#{requestBlood.units}">Units required</label>
+                    <input type="number" id="unitsRequired" name="unitsRequired" min="1" value="1" required>
+                </div>
+                <div>
+                    <label for="hospital" th:text="#{requestBlood.hospital}">Hospital</label>
+                    <input type="text" id="hospital" name="hospital" required>
+                </div>
+            </div>
+            <label for="requesterName" th:text="#{requestBlood.yourName}">Your name</label>
+            <input type="text" id="requesterName" name="requesterName" required>
+            <label for="requesterPhone" th:text="#{requestBlood.yourPhone}">Your phone number</label>
+            <input type="text" id="requesterPhone" name="requesterPhone" required th:placeholder="#{register.phonePlaceholder}">
+            <label for="message" th:text="#{requestBlood.message}">Message (optional)</label>
+            <input type="text" id="message" name="message" th:placeholder="#{requestBlood.messagePlaceholder}">
+
+            <label for="captchaAnswer" th:text="#{requestBlood.captchaLabel} + ': ' + ${captchaQuestion}"></label>
+            <input type="text" id="captchaAnswer" name="captchaAnswer" required inputmode="numeric">
+
+            <div th:if="${error}" class="error" th:text="${error}"></div>
+
+            <button type="submit" style="width:100%;" th:text="#{requestBlood.submit}">Submit Request</button>
+        </form>
+    </div>
+
+    <p style="color:var(--muted); font-size:0.85rem; text-align:center;">
+        <span th:text="#{requestBlood.emergencyNote}">In a genuine life-threatening emergency, also call 108 or see the Contact page for verified national helplines.</span>
+    </p>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: ai-assistant}"></div>
+
+<script th:src="@{/js/ai-assistant.js}"></script>
+</body>
+</html>

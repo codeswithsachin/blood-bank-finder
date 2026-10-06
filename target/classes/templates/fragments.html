@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Shared top navigation for public-facing pages -->
+<nav th:fragment="public-nav" class="topbar">
+    <a th:href="@{/}" class="brand" style="text-decoration:none;">🩸 Blood Bank Finder</a>
+    <span class="right" style="gap:18px;">
+        <a th:href="@{/find-donors}" class="nav-link" th:text="#{nav.findDonors}">Find Donors</a>
+        <a th:href="@{/hospitals}" class="nav-link" th:text="#{nav.hospitals}">Hospitals</a>
+        <a th:href="@{/camps}" class="nav-link" th:text="#{nav.camps}">Camps</a>
+        <a th:href="@{/request-blood}" class="nav-link" th:text="#{nav.requestBlood}">Request Blood</a>
+        <a th:href="@{/contact}" class="nav-link" th:text="#{nav.contact}">Contact</a>
+        <span style="font-size:0.8rem; color:var(--muted);">
+            <a th:href="@{${currentUri}(lang=en)}" style="color:var(--muted); text-decoration:none;">EN</a>
+            /
+            <a th:href="@{${currentUri}(lang=hi)}" style="color:var(--muted); text-decoration:none;">हिं</a>
+        </span>
+        <a th:href="@{/login}" class="btn" style="margin:0; padding:8px 16px; font-size:0.85rem;" th:text="#{nav.login}">Login</a>
+    </span>
+</nav>
+
+<!-- AI Assistant floating widget -->
+<div th:fragment="ai-assistant">
+    <button id="ai-assistant-toggle" title="AI Assistant" onclick="toggleAiAssistant()">🤖</button>
+    <div id="ai-assistant-panel" class="glass">
+        <div class="ai-header">
+            <span>🤖 AI Assistant</span>
+            <button onclick="toggleAiAssistant()">✕</button>
+        </div>
+        <div id="ai-assistant-messages">
+            <div class="ai-msg bot">Hi! I'm the Blood Bank Finder assistant. Ask me about eligibility, donating, or how this site works.</div>
+        </div>
+        <div class="ai-suggestions">
+            <button type="button" onclick="askAi('Who can donate blood?')">Who can donate?</button>
+            <button type="button" onclick="askAi('How does matching work?')">How matching works</button>
+            <button type="button" onclick="askAi('Emergency contact')">Emergency contact</button>
+        </div>
+        <div id="ai-assistant-input-row">
+            <input type="text" id="ai-assistant-input" placeholder="Type your question..." onkeydown="if(event.key==='Enter'){sendAiMessage();}">
+            <button type="button" onclick="sendAiMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
+<footer th:fragment="footer" class="site-footer">
+    Blood Bank Finder. Created by <strong>Sachin</strong>
+</footer>
+
+</body>
+</html>

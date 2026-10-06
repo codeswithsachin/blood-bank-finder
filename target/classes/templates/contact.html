@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact & Emergency Helplines - Blood Bank Finder</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{fragments :: public-nav}"></nav>
+
+<div class="container">
+    <h1 style="font-size:1.8rem; margin-bottom:4px;" th:text="#{contact.title}">Contact &amp; Emergency Helplines</h1>
+    <p style="color:var(--muted); margin-top:0;" th:text="#{contact.subtitle}">
+        India doesn't have a single unified toll-free number for all blood requests. The fastest path in an
+        emergency is usually the nearest hospital, or one of these verified national services.
+    </p>
+
+    <div class="grid-2">
+        <div class="glass glass-card">
+            <h2 th:text="'🚑 ' + #{contact.emergency.title}">🚑 National Emergency</h2>
+            <p><strong>108</strong>: <span th:text="#{contact.emergency.108}">free ambulance / emergency response, available in most states.</span></p>
+            <p><strong>104</strong>: <span th:text="#{contact.emergency.104}">health helpline for medical advice and information (availability varies by state).</span></p>
+            <a href="tel:108" class="btn" style="display:inline-block;" th:text="#{contact.emergency.call108}">Call 108</a>
+        </div>
+
+        <div class="glass glass-card">
+            <h2 th:text="'🩸 ' + #{contact.eraktkosh.title}">🩸 eRaktKosh (Govt. of India)</h2>
+            <p th:text="#{contact.eraktkosh.desc}">Centralized blood bank management system by the Ministry of Health &amp; Family Welfare. Search live blood stock and blood banks nationwide.</p>
+            <a href="https://eraktkosh.mohfw.gov.in/" target="_blank" rel="noopener" class="btn" style="display:inline-block;" th:text="#{contact.eraktkosh.visit}">Visit eRaktKosh</a>
+        </div>
+
+        <div class="glass glass-card">
+            <h2 th:text="#{contact.ircs.title}">Indian Red Cross Society: National Blood Services</h2>
+            <p>011-23359379 (24&times;7)<br>9319982104 / 9319982105</p>
+            <a href="tel:01123359379" class="btn" style="display:inline-block;" th:text="#{contact.ircs.call}">Call IRCS</a>
+        </div>
+
+        <div class="glass glass-card">
+            <h2 th:text="#{contact.nbtc.title}">National Blood Transfusion Council</h2>
+            <p th:text="#{contact.nbtc.desc}">Policy body under the Ministry of Health &amp; Family Welfare.</p>
+            <p>011-43509999<br>011-23731778</p>
+            <a href="tel:01143509999" class="btn" style="display:inline-block;" th:text="#{contact.nbtc.call}">Call NBTC</a>
+        </div>
+    </div>
+
+    <div class="glass glass-card">
+        <h2 th:text="#{contact.platform.title}">Prefer to use this platform directly?</h2>
+        <p style="color:var(--muted);" th:text="#{contact.platform.desc}">Raise an emergency request and we'll match it against eligible donors by blood group and city automatically.</p>
+        <a th:href="@{/request-blood}" class="btn" style="display:inline-block;" th:text="#{contact.platform.cta}">Request Blood Now</a>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: ai-assistant}"></div>
+
+<script th:src="@{/js/ai-assistant.js}"></script>
+</body>
+</html>

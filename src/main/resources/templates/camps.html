@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blood Donation Camps - Blood Bank Finder</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{fragments :: public-nav}"></nav>
+
+<div class="container">
+    <h1 style="font-size:1.8rem; margin-bottom:4px;">Upcoming Blood Donation Camps</h1>
+    <p style="color:var(--muted); margin-top:0;">
+        Community donation drives happening near you. This is sample directory data for demonstration,
+        not a live, admin-managed schedule yet.
+    </p>
+
+    <div class="glass glass-card" th:if="${!camps.isEmpty()}">
+        <table>
+            <thead>
+            <tr><th>Camp</th><th>City</th><th>Area</th><th>Date</th><th>Organizer</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${camps}">
+                <td th:text="${c.name}"></td>
+                <td th:text="${c.city}"></td>
+                <td th:text="${c.area}"></td>
+                <td th:text="${c.campDate}"></td>
+                <td th:text="${c.organizer}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p th:if="${camps.isEmpty()}" style="color:var(--muted);">No upcoming camps listed right now.</p>
+
+    <div class="glass glass-card">
+        <h2>Organizing a camp?</h2>
+        <p style="color:var(--muted);">
+            This directory doesn't have a public submission form yet. If you're coordinating a real donation
+            drive, reach out via the <a th:href="@{/contact}" style="color:var(--red);">Contact page</a>, or
+            check eRaktKosh for the official government camp listings.
+        </p>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: ai-assistant}"></div>
+
+<script th:src="@{/js/ai-assistant.js}"></script>
+</body>
+</html>

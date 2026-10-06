@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Find Donors - Blood Bank Finder</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+<nav th:replace="~{fragments :: public-nav}"></nav>
+
+<div class="container">
+    <h1 style="font-size:1.8rem; margin-bottom:4px;">🤖 AI-Powered Donor Matching</h1>
+    <p style="color:var(--muted); margin-top:0;">
+        Our matching engine checks real blood-compatibility rules, not just an exact group match, and ranks
+        results by compatibility strength.
+    </p>
+
+    <div class="glass glass-card">
+        <form method="get" th:action="@{/find-donors}">
+            <div class="grid-2">
+                <div>
+                    <label for="bloodGroup">Blood group needed</label>
+                    <select id="bloodGroup" name="bloodGroup" required>
+                        <option value="">Select...</option>
+                        <option th:each="group : ${bloodGroups}" th:value="${group}" th:text="${group.symbol}"
+                                th:selected="${group == searchedGroup}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" placeholder="e.g. Vadodara" th:value="${searchedCity}" required>
+                </div>
+            </div>
+            <button type="submit" style="width:100%;">Run AI Match</button>
+        </form>
+    </div>
+
+    <div class="glass glass-card" th:if="${matches != null}">
+        <h2>Results for <span th:text="${searchedGroup.symbol}"></span> in <span th:text="${searchedCity}"></span></h2>
+        <table th:if="${!matches.isEmpty()}">
+            <thead>
+            <tr><th>Donor Group</th><th>Eligible Donors</th><th>Match Score</th><th>Why</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="m : ${matches}">
+                <td><span class="badge" th:text="${m.donorGroup.symbol}"></span></td>
+                <td th:text="${m.eligibleCount}"></td>
+                <td><strong th:text="${m.matchScore} + '%'"></strong></td>
+                <td style="color:var(--muted); font-size:0.85rem;" th:text="${m.reason}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <p th:if="${matches.isEmpty()}" style="color:var(--muted);">
+            No eligible donors found for this blood group in that city yet. Try
+            <a th:href="@{/request-blood}" style="color:var(--red);">raising an emergency request</a> instead,
+            it will notify donors as soon as they become eligible.
+        </p>
+        <p style="color:var(--muted); font-size:0.78rem; margin-top:14px;">
+            For your safety and donors' privacy, we only show aggregate counts here, never individual names or
+            phone numbers. To actually reach donors, use <a th:href="@{/request-blood}" style="color:var(--red);">Request Blood</a>,
+            which privately notifies matching eligible donors.
+        </p>
+    </div>
+
+    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:8px;">
+        <span id="live-dot" style="color:#1a7f4a;">●</span> Live &middot;
+        updated <span id="last-updated">just now</span>
+        <button type="button" onclick="locateMe()" class="link-btn" style="margin-left:10px; padding:4px 10px; font-size:0.75rem;">📍 Find my location</button>
+    </p>
+    <div id="map" class="map-box glass"></div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: ai-assistant}"></div>
+
+<script th:if="${searchMarker != null}" th:inline="javascript">
+    window.EXTRA_MAP_MARKERS = [/*[[${searchMarker}]]*/ {}];
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script th:src="@{/js/ai-assistant.js}"></script>
+<script th:src="@{/js/live-map.js}"></script>
+</body>
+</html>

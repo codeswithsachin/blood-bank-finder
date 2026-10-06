@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Blood Bank Finder</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container" style="flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+    <p style="font-size:0.8rem; align-self:flex-end; margin-bottom:8px;">
+        <a th:href="@{${currentUri}(lang=en)}" style="color:var(--muted); text-decoration:none;">EN</a>
+        /
+        <a th:href="@{${currentUri}(lang=hi)}" style="color:var(--muted); text-decoration:none;">हिं</a>
+    </p>
+    <div class="auth-wrap glass glass-card">
+        <h1>Blood Bank Finder</h1>
+        <p class="auth-sub" th:text="#{login.subtitle}">Sign in to your account</p>
+
+        <form th:action="@{/login}" method="post">
+            <label for="username" th:text="#{login.username}">Username</label>
+            <input type="text" id="username" name="username" required autofocus>
+
+            <label for="password" th:text="#{login.password}">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <div th:if="${param.error}" class="error" th:text="#{login.error}">Invalid username or password.</div>
+            <div th:if="${param.logout}" class="success" th:text="#{login.logoutMsg}">You've been logged out.</div>
+            <div th:if="${param.registered}" class="success" th:text="#{login.registeredMsg}">Account created. Please log in.</div>
+
+            <button type="submit" style="width:100%;" th:text="#{login.button}">Log in</button>
+        </form>
+
+        <p class="muted-link"><span th:text="#{login.registerPrompt}">New donor?</span> <a th:href="@{/register}" th:text="#{login.registerLink}">Register here</a></p>
+        <p class="muted-link" style="opacity:0.6;" th:text="#{login.adminNote}">Admin logs in with the same form.</p>
+        <p class="muted-link"><a th:href="@{/}">&larr; <span th:text="#{login.backHome}">Back to home</span></a></p>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: ai-assistant}"></div>
+
+<script th:src="@{/js/ai-assistant.js}"></script>
+</body>
+</html>
